@@ -1,21 +1,45 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
 import { useStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Check, Star, Sparkles } from 'lucide-react';
+import { Check, Star, Sparkles, Users, Award } from 'lucide-react';
 import toast from 'react-hot-toast';
+
+// Types
+type SubscriptionTier = 'free' | 'premium' | 'elite' | 'elite-family' | 'corporate';
+type PlanType = 'individual' | 'family' | 'corporate';
+type SubscriptionPlan = 'monthly' | 'annual';
+
+interface PlanFeature {
+  id: string;
+  name: string;
+  price: string;
+  priceDetail: string;
+  description: string;
+  features: string[];
+  buttonText: string;
+  buttonVariant: 'default' | 'outline';
+  badge?: string;
+  highlighted?: boolean;
+  icon?: ReactNode;
+}
+
+type PlansByType = Record<PlanType, PlanFeature[]>;
 
 export default function SubscriptionsPage() {
   const { user, subscribe } = useStore();
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<'free' | 'premium'>('free');
+  const [selectedPlan, setSelectedPlan] = useState<SubscriptionTier>('premium');
+  const [planType, setPlanType] = useState<PlanType>('individual');
+  const [subscriptionPeriod, setSubscriptionPeriod] = useState<SubscriptionPlan>('monthly');
+  const [showPauseModal, setShowPauseModal] = useState(false);
 
-  const handleSubscribe = (plan: 'free' | 'premium') => {
-    setSelectedPlan(plan);
-    if (plan === 'premium') {
+  const handleSubscribe = (planId: SubscriptionTier) => {
+    setSelectedPlan(planId);
+    if (planId !== 'free') {
       setShowCheckoutModal(true);
     } else {
       subscribe('free');
@@ -24,46 +48,110 @@ export default function SubscriptionsPage() {
   };
 
   const handleConfirmSubscription = () => {
-    subscribe(selectedPlan);
+    subscribe(selectedPlan as SubscriptionTier);
     setShowCheckoutModal(false);
-    toast.success('You are now subscribed to the Premium Plan!');
+    toast.success(`You are now subscribed to the ${selectedPlan} Plan!`);
   };
 
-  const plans = [
-    {
-      id: 'free',
-      name: 'Explorer Plan',
-      price: 'Free',
-      description: 'Start your wellness journey',
-      features: [
-        'Access to Longevity Score',
-        'Limited wellness content',
-        'Basic health insights',
-        'Community support',
-      ],
-      buttonText: user.subscription === 'free' ? 'Current Plan' : 'Switch to Free',
-      buttonVariant: 'outline' as const,
-    },
-    {
-      id: 'premium',
-      name: 'Premium Plan',
-      price: 'AED 499',
-      priceDetail: '/month',
-      description: 'Complete wellness experience',
-      features: [
-        '1 home session per month',
-        'Personalized wellness plan',
-        'Priority booking',
-        'Advanced health analytics',
-        '24/7 doctor on call access',
-        'Exclusive member discounts',
-      ],
-      badge: 'Most Popular',
-      buttonText: user.subscription === 'premium' ? 'Current Plan' : 'Subscribe Now',
-      buttonVariant: 'default' as const,
-      highlighted: true,
-    },
-  ];
+  const handlePauseSubscription = () => {
+    // Implementation for pausing subscription
+    setShowPauseModal(false);
+    toast.success('Your subscription has been paused for 2 months');
+  };
+
+  const plans: PlansByType = {
+    individual: [
+      {
+        id: 'free',
+        name: 'Explorer Plan',
+        price: '0',
+        priceDetail: '/month',
+        description: 'Start your wellness journey',
+        features: [
+          'Basic Longevity Score',
+          'Limited educational content',
+          'Community support',
+          'Email support',
+        ],
+        buttonText: user.subscription === 'free' ? 'Current Plan' : 'Get Started',
+        buttonVariant: 'outline' as const,
+      },
+      {
+        id: 'premium',
+        name: 'Premium Plan',
+        price: subscriptionPeriod === 'annual' ? '4,990' : '499',
+        priceDetail: subscriptionPeriod === 'annual' ? '/year (2 months free)' : '/month',
+        description: 'Complete wellness experience',
+        features: [
+          'Therapy sessions',
+          'Personalized supplement plans',
+          'Expert-led webinars',
+          'Advanced health analytics',
+          '24/7 doctor on call',
+          'Exclusive member discounts',
+        ],
+        badge: 'Most Popular',
+        buttonText: user.subscription === 'premium' ? 'Current Plan' : 'Subscribe Now',
+        buttonVariant: 'default' as const,
+        highlighted: true,
+      },
+      {
+        id: 'elite',
+        name: 'Elite Plan',
+        price: subscriptionPeriod === 'annual' ? '8,990' : '899',
+        priceDetail: subscriptionPeriod === 'annual' ? '/year (2 months free)' : '/month',
+        description: 'Premium wellness experience',
+        features: [
+          'Everything in Premium',
+          'Wellness concierge',
+          'Advanced biomarker tracking',
+          'Quarterly health assessments',
+          'Priority scheduling',
+          'Dedicated health coach',
+        ],
+        buttonText: user.subscription === 'elite' ? 'Current Plan' : 'Upgrade Now',
+        buttonVariant: 'default' as const,
+      },
+    ],
+    family: [
+      {
+        id: 'elite-family',
+        name: 'Elite Family Plan',
+        price: subscriptionPeriod === 'annual' ? '12,990' : '1,299',
+        priceDetail: subscriptionPeriod === 'annual' ? '/year (2 months free)' : '/month',
+        description: 'Wellness for the whole family',
+        features: [
+          '2 adults + 2 children under 18',
+          'Unified family dashboard',
+          'Shared benefits',
+          'Family health tracking',
+          'Priority support',
+        ],
+        buttonText: user.subscription === 'elite-family' ? 'Current Plan' : 'Choose Family Plan',
+        buttonVariant: 'default' as const,
+        icon: <Users className="w-6 h-6 text-valeo-navy" />,
+      },
+    ],
+    corporate: [
+      {
+        id: 'corporate',
+        name: 'Corporate Wellness',
+        price: 'Custom',
+        priceDetail: 'pricing',
+        description: 'Employee wellness solutions',
+        features: [
+          'Tailored wellness programs',
+          'Team health challenges',
+          'Executive health assessments',
+          'On-site wellness events',
+          'Dedicated account manager',
+        ],
+        buttonText: 'Contact Sales',
+        buttonVariant: 'outline' as const,
+        icon: <Award className="w-6 h-6 text-valeo-navy" />,
+      },
+    ],
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
@@ -81,14 +169,14 @@ export default function SubscriptionsPage() {
               </div>
               <div>
                 <div className="font-semibold text-valeo-navy">Active Premium Member</div>
-                <div className="text-sm text-gray-600">You're enjoying all premium benefits</div>
+                <div className="text-sm text-gray-600">You&apos;re enjoying all premium benefits</div>
               </div>
             </CardContent>
           </Card>
         )}
 
         <div className="space-y-4">
-          {plans.map((plan) => (
+          {plans[planType].map((plan) => (
             <Card
               key={plan.id}
               className={`relative overflow-hidden transition-all ${
@@ -117,9 +205,13 @@ export default function SubscriptionsPage() {
                 </div>
                 <div className="mt-4">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-valeo-navy">{plan.price}</span>
+                    <span className="text-4xl font-bold text-valeo-navy flex items-center">
+                      {plan.price}
+                    </span>
                     {plan.priceDetail && (
-                      <span className="text-gray-600 text-sm">{plan.priceDetail}</span>
+                      <span className="text-gray-600 text-sm">
+                        {plan.price !== 'Custom' ? 'AED' : ''} {plan.priceDetail}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -136,7 +228,7 @@ export default function SubscriptionsPage() {
                 </div>
 
                 <Button
-                  onClick={() => handleSubscribe(plan.id as 'free' | 'premium')}
+                  onClick={() => handleSubscribe(plan.id as SubscriptionTier)}
                   variant={plan.buttonVariant}
                   disabled={user.subscription === plan.id}
                   className={`w-full py-6 font-semibold ${
@@ -173,7 +265,7 @@ export default function SubscriptionsPage() {
                 <CardContent className="p-4 space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="font-medium text-valeo-navy">Premium Plan</span>
-                    <span className="text-xl font-bold text-valeo-navy">AED 499</span>
+                    <span className="text-xl font-bold text-valeo-navy">499 AED</span>
                   </div>
                   <div className="text-sm text-gray-600">
                     Billed monthly • Cancel anytime
@@ -181,15 +273,15 @@ export default function SubscriptionsPage() {
                   <div className="pt-3 border-t border-gray-200">
                     <div className="flex justify-between text-sm mb-1">
                       <span className="text-gray-600">Subtotal</span>
-                      <span className="text-valeo-navy">AED 499</span>
+                      <span className="text-valeo-navy">499 AED</span>
                     </div>
                     <div className="flex justify-between text-sm mb-2">
                       <span className="text-gray-600">Tax</span>
-                      <span className="text-valeo-navy">AED 0</span>
+                      <span className="text-valeo-navy">0 AED</span>
                     </div>
                     <div className="flex justify-between font-bold text-lg pt-2 border-t border-gray-200">
                       <span className="text-valeo-navy">Total</span>
-                      <span className="text-valeo-navy">AED 499</span>
+                      <span className="text-valeo-navy">499 AED</span>
                     </div>
                   </div>
                 </CardContent>
@@ -201,12 +293,49 @@ export default function SubscriptionsPage() {
                 </p>
               </div>
 
-              <Button
-                onClick={handleConfirmSubscription}
-                className="w-full valeo-gradient text-valeo-navy font-semibold py-6 text-lg"
-              >
-                Confirm Subscription
-              </Button>
+              <div className="space-y-3">
+                <Button
+                  onClick={handleConfirmSubscription}
+                  className="w-full valeo-gradient text-valeo-navy font-semibold py-6 text-lg"
+                >
+                  {selectedPlan === 'free' ? 'Continue with Free Plan' : 'Subscribe Now'}
+                </Button>
+                <p className="text-xs text-center text-gray-500">
+                  By subscribing, you agree to our Terms of Service and Privacy Policy.
+                </p>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Pause Subscription Modal */}
+        <Dialog open={showPauseModal} onOpenChange={setShowPauseModal}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Pause Your Subscription</DialogTitle>
+              <DialogDescription>
+                You can pause your subscription for up to 2 months per year.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <p className="text-sm text-gray-600">
+                Your subscription will be put on hold, and you won&apos;t be charged during the pause period.
+                You can resume anytime before the 2 months are over.
+              </p>
+              <div className="flex justify-end gap-3 pt-4">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowPauseModal(false)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  className="bg-valeo-navy hover:bg-valeo-navy/90"
+                  onClick={handlePauseSubscription}
+                >
+                  Confirm Pause
+                </Button>
+              </div>
             </div>
           </DialogContent>
         </Dialog>
