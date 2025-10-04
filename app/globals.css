@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --valeo-yellow: #FFD54F;
+  --valeo-navy: #002B5B;
+  --valeo-bg: #F3F4F6;
+  --valeo-text: #1F2937;
+  --valeo-gradient-start: #F9A825;
+  --valeo-gradient-end: #FFC107;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 218 11% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 218 11% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 218 11% 15%;
+    --primary: 45 100% 65%;
+    --primary-foreground: 210 100% 18%;
+    --secondary: 210 8% 95%;
+    --secondary-foreground: 210 100% 18%;
+    --muted: 210 8% 95%;
+    --muted-foreground: 218 11% 45%;
+    --accent: 210 8% 95%;
+    --accent-foreground: 210 100% 18%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 45 100% 65%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-white text-valeo-text antialiased;
+  }
+  html {
+    @apply scroll-smooth;
+  }
+}
+
+@layer utilities {
+  .text-valeo-text {
+    color: var(--valeo-text);
+  }
+  .bg-valeo-yellow {
+    background-color: var(--valeo-yellow);
+  }
+  .bg-valeo-navy {
+    background-color: var(--valeo-navy);
+  }
+  .bg-valeo-bg {
+    background-color: var(--valeo-bg);
+  }
+  .valeo-gradient {
+    background: linear-gradient(135deg, var(--valeo-gradient-start), var(--valeo-gradient-end));
+  }
+  .pb-nav {
+    padding-bottom: 5rem;
+  }
+}

@@ -1,0 +1,113 @@
+
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║              📱 VALEO HEALTH PROTOTYPE 📱                       ║
+║                                                                ║
+║                    MOBILE VIEW REQUIRED!                       ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+
+⚠️  IMPORTANT: This prototype is MOBILE-FIRST!
+    On desktop, you MUST use developer tools.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 QUICK SETUP (60 seconds)
+
+1. Start the server:
+   
+   npm run dev
+
+2. Open browser:
+   
+   http://localhost:3000
+
+3. ⚠️  ENABLE MOBILE VIEW:
+   
+   Chrome/Edge:
+   • Press F12 or Ctrl+Shift+I (Cmd+Option+I on Mac)
+   • Press Ctrl+Shift+M (Cmd+Shift+M on Mac)
+   • Select "iPhone 14 Pro" from dropdown
+   • Refresh page (F5)
+
+4. ✅ Verify you see:
+   
+   ✓ Yellow "Get the Valeo App" bar at top
+   ✓ Bottom navigation bar with 4 icons
+   ✓ Mobile-optimized layout
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📱 RECOMMENDED DEVICE SETTINGS
+
+  iPhone 14 Pro    ⭐ BEST OPTION
+  390 x 844 pixels
+
+  OR
+
+  Google Pixel 7
+  412 x 915 pixels
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ WITHOUT MOBILE VIEW YOU'LL MISS:
+
+  • App redirect bar (top)
+  • Proper bottom navigation
+  • Mobile-optimized layouts
+  • Touch-optimized buttons
+  • The intended user experience
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 DOCUMENTATION
+
+  MOBILE_VIEW_SETUP.md   ← Detailed setup guide
+  QUICKSTART.md          ← 60-second quick start
+  DEMO_GUIDE.md          ← Full demo instructions
+  README.md              ← Complete documentation
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 DEMO PATH
+
+  1. Home (/)                  - View services
+  2. Referrals (/referrals)    - Invite & convert (confetti!)
+  3. Subscriptions             - Subscribe to Premium
+  4. Wallet (/wallet)          - Redeem points (confetti!)
+  5. Internal Referral         - Scan QR (confetti!)
+  6. Admin (/admin)            - View analytics
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔧 KEYBOARD SHORTCUTS (Chrome)
+
+  F12                      Open DevTools
+  Ctrl+Shift+M             Toggle Device Mode
+  Cmd+Shift+M (Mac)        Toggle Device Mode
+  F5                       Refresh Page
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✨ FEATURES
+
+  ✓ 6 Pages (+ 1 hidden admin)
+  ✓ Mobile-first responsive design
+  ✓ Real Valeo branding & colors
+  ✓ Referral tracking with confetti
+  ✓ Subscription management
+  ✓ Points & rewards system
+  ✓ Internal therapist referrals
+  ✓ Admin analytics dashboard
+  ✓ Smooth animations (Framer Motion)
+  ✓ Toast notifications
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Need help? See MOBILE_VIEW_SETUP.md for detailed instructions.
+
+Ready to demo? Remember: MOBILE VIEW REQUIRED! 📱
+
+╔════════════════════════════════════════════════════════════════╗
+║  Built with ❤️  using Next.js, Tailwind CSS, and React       ║
+╚════════════════════════════════════════════════════════════════╝
