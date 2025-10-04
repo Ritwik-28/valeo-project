@@ -1,47 +1,79 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useStore } from '@/lib/store';
-import { Users, TrendingUp, CreditCard, Coins, UserCheck, Activity } from 'lucide-react';
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from 'recharts';
+import { Users, TrendingUp, CreditCard, Coins, UserCheck, Activity, ArrowUp } from 'lucide-react';
+import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend, CategoryScale, LinearScale, BarElement, PointElement, LineElement } from 'chart.js';
+import { Bar, Line, Pie } from 'react-chartjs-2';
+import 'chart.js/auto';
+
+// Register ChartJS components
+ChartJS.register(
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  ChartTooltip,
+  Legend
+);
 
 export default function AdminDashboard() {
   const { stats, referrals, user } = useStore();
 
-  // Mock data for charts
-  const userGrowthData = [
-    { month: 'Jan', users: 45 },
-    { month: 'Feb', users: 65 },
-    { month: 'Mar', users: 80 },
-    { month: 'Apr', users: 95 },
-    { month: 'May', users: 120 },
-  ];
+  // Chart data
+  const userGrowthData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    datasets: [
+      {
+        label: 'Users',
+        data: [45, 65, 80, 95, 120],
+        borderColor: '#002B5B',
+        backgroundColor: 'rgba(0, 43, 91, 0.1)',
+        tension: 0.3,
+        fill: true,
+      },
+    ],
+  };
 
-  const referralData = [
-    { month: 'Jan', referrals: 12 },
-    { month: 'Feb', referrals: 18 },
-    { month: 'Mar', referrals: 24 },
-    { month: 'Apr', referrals: 30 },
-    { month: 'May', referrals: 38 },
-  ];
+  const referralData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    datasets: [
+      {
+        label: 'Referrals',
+        data: [12, 18, 24, 30, 38],
+        backgroundColor: '#FFD54F',
+        borderRadius: 4,
+      },
+    ],
+  };
 
-  const subscriptionData = [
-    { name: 'Free', value: 40, color: '#94a3b8' },
-    { name: 'Premium', value: 80, color: '#FFD54F' },
-  ];
+  const subscriptionData = {
+    labels: ['Free', 'Premium'],
+    datasets: [
+      {
+        data: [40, 80],
+        backgroundColor: ['#94a3b8', '#FFD54F'],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
 
   const kpiCards = [
     {
@@ -116,27 +148,19 @@ export default function AdminDashboard() {
               <CardTitle className="text-lg text-valeo-navy">User Growth</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={userGrowthData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="month" stroke="#6b7280" />
-                  <YAxis stroke="#6b7280" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '2px solid #FFD54F',
-                      borderRadius: '8px',
-                    }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="users"
-                    stroke="#002B5B"
-                    strokeWidth={3}
-                    dot={{ fill: '#FFD54F', r: 6 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              <div className="h-[300px] w-full">
+                <Line 
+                  data={userGrowthData} 
+                  options={{
+                    ...chartOptions,
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                    },
+                  }} 
+                />
+              </div>
             </CardContent>
           </Card>
 
@@ -146,21 +170,19 @@ export default function AdminDashboard() {
               <CardTitle className="text-lg text-valeo-navy">Referral Trends</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={referralData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="month" stroke="#6b7280" />
-                  <YAxis stroke="#6b7280" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '2px solid #FFD54F',
-                      borderRadius: '8px',
-                    }}
-                  />
-                  <Bar dataKey="referrals" fill="#FFD54F" radius={[8, 8, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+              <div className="h-[300px] w-full">
+                <Bar 
+                  data={referralData} 
+                  options={{
+                    ...chartOptions,
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                    },
+                  }} 
+                />
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -173,25 +195,19 @@ export default function AdminDashboard() {
               <CardTitle className="text-lg text-valeo-navy">Subscription Distribution</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    data={subscriptionData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {subscriptionData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="h-[250px] w-full">
+                <Pie 
+                  data={subscriptionData} 
+                  options={{
+                    ...chartOptions,
+                    plugins: {
+                      legend: {
+                        position: 'bottom',
+                      },
+                    },
+                  }} 
+                />
+              </div>
             </CardContent>
           </Card>
 
