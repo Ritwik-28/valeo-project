@@ -282,15 +282,6 @@ All data is:
 - No API calls or database connections
 - Perfect for demonstration and prototyping
 
-## 🎯 Future Enhancements (Not Implemented)
-
-- QR code scanning for therapist referrals
-- Local storage persistence
-- More detailed analytics
-- Additional service pages
-- User profile management
-- Social sharing integration
-
 ## 📝 Notes
 
 - This is a prototype for demonstration purposes
@@ -299,20 +290,6 @@ All data is:
 - Links to app stores are placeholder URLs
 - Designed to showcase UX/UI flows
 
-## 🤝 Contributing
-
-This is a prototype project. For production implementation, consider:
-- Adding proper authentication
-- Integrating with a backend API
-- Implementing real payment processing
-- Adding analytics tracking
-- Setting up error monitoring
-- Implementing proper testing
-
 ## 📄 License
 
 This prototype is for demonstration purposes only.
-
----
-
-Built with ❤️ using Next.js, Tailwind CSS, and modern web technologies.
